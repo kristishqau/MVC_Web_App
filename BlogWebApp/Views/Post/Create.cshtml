@@ -1,0 +1,61 @@
+﻿@using BlogWebApp.Data
+@using BlogWebApp.ViewModels
+@model CreatePostViewModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h2 class="display-4 mb-4">Create a New Post</h2>
+    </div>
+    <form method="post" asp-action="Create" enctype="multipart/form-data">
+        <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId"/>
+        <div class="form-group">
+            <label asp-for="Title">Title</label>
+            <input asp-for="Title" class="form-control" placeholder="Enter Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="mb-2"></div>
+        <div class="form-group">
+            <label asp-for="Category">Category</label>
+            <select asp-for="Category" asp-items="@Html.GetEnumSelectList<Category>()" class="form-control">
+                <option value="" class="text-muted">--Select--</option>
+            </select>
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Write a Description..."></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageUrl">Image</label>
+            <input asp-for="ImageUrl" type ="file" class="form-control" placeholder="Upload Image">
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+        <div class="mb-2"></div>
+        <button type="submit" class="btn btn-primary">Post</button>
+    </form>
+</div>
+
+<style>
+    h2.display-4 {
+        color: #007bff; /* Bootstrap primary color */
+        display: inline-block; /* Allow the text centering */
+        border-bottom: 2px solid #007bff; /* Underline effect */
+        padding-bottom: 10px; /* Space between text and underline */
+    }
+
+    h2.container {
+        text-align: center; /* Center-align the text */
+    }
+
+    form {
+        max-width: 400px; /* Adjust the max width of the form as needed */
+        margin: 0 auto; /* Center the form within the container */
+    }
+</style>

@@ -1,0 +1,115 @@
+﻿<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+
+@model BlogWebApp.ViewModels.DashboardViewModel
+
+<h1 class="display-4 fw-normal">Editor Dashboard</h1>
+<a type="button" class="btn btn-primary mb-3" asp-area="" asp-controller="Post" asp-action="Create">Create Post</a>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <h2 class="display-5 fw-normal">Your posts</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-3">
+
+            @foreach (var item in Model.Posts)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <a asp-controller="Post" asp-action="Detail" asp-route-id="@item.Id" class="card-img-top">
+                            <img src="@item.ImageUrl" width="100%" height="225" alt="Card image cap">
+                        </a>
+                        <div class="card-body">
+                            <p class="card-text">@item.Title</p>
+                            <p class="description-text" data-fulltext="@item.Description">
+                                @if (item.Description.Length > 72)
+                                {
+                                    <span class="truncated-text">@item.Description.Substring(0, 72)</span>
+                                    <span class="full-text" style="display: none;">@item.Description</span>
+                                    <a href="#" class="read-more-btn">Read more</a>
+                                }
+                                else
+                                {
+                                    @item.Description
+                                }
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        <a asp-controller="Post" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <a href="#" class="btn btn-sm btn-outline-secondary comment-link" data-post-id="@item.Id">View Comments</a>
+                                    }
+                                </div>
+                                <small class="text-muted">@item.Category</small>
+                            </div>
+                            <div class="comments-container" style="display: none;">
+                                @if (item.Comments != null && item.Comments.Any())
+                                {
+                                    @foreach (var comment in item.Comments)
+                                    {
+                                        <div class="comment" id="comment-@comment.Id">
+                                            <div class="comment-header">
+                                                <p>
+                                                    <a>
+                                                        @(comment.AppUser != null ? comment.AppUser.UserName : "Anonymous")
+                                                    </a> wrote:
+                                                </p>
+                                            </div>
+                                            <div class="comment-content" id="comment-content-@comment.Id">
+                                                @comment.Text
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="no-comments-message">
+                                        <p>No comments to show!</p>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.comment-link').click(function (event) {
+            event.preventDefault();
+
+            var commentsContainer = $(this).closest('.card-body').find('.comments-container');
+            commentsContainer.toggle();
+        });
+    });
+</script>
+
+
+
+<style>
+    .comment {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .comment-header {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .comment-content {
+        margin-top: 5px;
+    }
+
+    .no-comments-message {
+        margin-top: 10px;
+        color: #777;
+    }
+
+</style>

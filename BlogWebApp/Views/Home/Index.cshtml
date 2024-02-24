@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Welcome to Blog MVC!</h1>
+            <p class="lead text-body-secondary">Explore and share your thoughts with our community. Something short and inspiring about the collection below—its contents, the creators, etc.</p>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <p>Welcome, @User.Identity.Name! <a href="@Url.Action("Index", "Post")">Go to Posts</a></p>
+            }
+            else
+            {
+                <p>
+                    <a class="btn btn-primary my-2" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                    <a class="btn btn-primary my-2" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                </p>
+            }
+        </div>
+    </div>
+</section>

@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model Post
+
+<section class="space-sm">
+    <div class="container">
+        <h1 class="my-4">
+            <small>Post Details</small>
+        </h1>
+        <div class="row">
+            <div class="col-md-8">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img class="img-fluid" src="@Model.ImageUrl" alt="">
+                }
+            </div>
+            <div class="col-md-4">
+                <div class="text-center mb-4 mt-4">
+                    <h5>@Model.Title</h5>
+                </div>
+                <h5>Creator Details</h5>
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div><i class="icon-text-document mr-1"></i> Full Name</div>
+                                <span>@(Model.AppUser != null ? Model.AppUser.FullName : "Anonymous")</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div><i class="icon-thumbs-up mr-1"></i> UserName</div>
+                                <span>@(Model.AppUser != null ? Model.AppUser.UserName : "Anonymous")</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div><i class="icon-share mr-1"></i> Email</div>
+                                <span>@(Model.AppUser != null ? Model.AppUser.Email : "Anonymous")</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <h5 class="mt-4">Overview</h5>
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div><i class="icon-text-document mr-1"></i> Created</div>
+                                <span>@Model.CreatedDate</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div><i class="icon-thumbs-up mr-1"></i> Category</div>
+                                <span>@(Model.Category)</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div><i class="icon-share mr-1"></i> Comments</div>
+                                <span>@Model.Comments.Count()</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("editor"))
+                {
+                    <div class="col-md-12 mt-4 mb-3">
+                        <div class="d-flex justify-content-end">
+                            <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger ml-auto">
+                                Delete Post
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row justify-content-between mt-4">
+            <div class="col-md-8">
+                <h5 class="mt-4 mb-4">Description Context</h5>
+                <article>
+                    @Model.Description
+                </article>
+                <hr>
+            </div>
+        </div>
+    </div>
+</section>

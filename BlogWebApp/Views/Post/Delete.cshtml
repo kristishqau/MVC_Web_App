@@ -1,0 +1,63 @@
+﻿@using BlogWebApp.Data
+@model Post
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4 mb-4">Are you sure you want to delete this post?</h1>
+    </div>
+    <form method="post" asp-action="Delete" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Title">Title</label>
+            <input asp-for="Title" class="form-control" placeholder="Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="mb-2"></div>
+        <div class="form-group">
+            <label asp-for="Category">Category</label>
+            <select asp-for="Category" asp-items="@Html.GetEnumSelectList<Category>()" class="form-control">
+                <option value="" class="text-muted">--Select--</option>
+            </select>
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageUrl">Image</label>
+            <input asp-for="ImageUrl" type="file" class="form-control">
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+    </form>
+    <div class="form-group">
+        <form action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Confirm" class="btn btn-danger float-right mt-3" />
+        </form>
+    </div>
+</div>
+
+<style>
+    h1.display-4 {
+        color: #007bff; /* Bootstrap primary color */
+        display: inline-block; /* Allow the text centering */
+        border-bottom: 2px solid #007bff; /* Underline effect */
+        padding-bottom: 10px; /* Space between text and underline */
+    }
+
+    h1.container {
+        text-align: center; /* Center-align the text */
+    }
+
+    form {
+        max-width: 400px; /* Adjust the max width of the form as needed */
+        margin: 0 auto; /* Center the form within the container */
+    }
+</style>
